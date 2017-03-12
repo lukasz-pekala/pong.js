@@ -17,9 +17,15 @@ function Ball(x, y, r, dx, dy) {
         r: r,
         dx: dx,
         dy: dy,
-        move: function() {
+        move: function(boundaryY) {
             this.x += this.dx;
             this.y += this.dy;
+            if(this.y + r >= boundaryY) {
+                this.dy = -this.dy;
+            } 
+            else if(this.y <= 0) {
+                this.dy = -this.dy;
+            }
         },
         draw: function(canvasContext) {
             canvasContext.fillStyle = 'white';
@@ -50,7 +56,7 @@ function Ball(x, y, r, dx, dy) {
         drawPaddle();
         drawPaddle2();
 
-        ball.move();
+        ball.move(canvas.height);
         ball.draw(canvasContext);
     };
 
