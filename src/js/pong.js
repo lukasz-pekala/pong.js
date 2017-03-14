@@ -26,6 +26,11 @@ function Ball(x, y, r, dx, dy) {
             else if(this.y <= 0) {
                 this.dy = -this.dy;
             }
+
+            //left side of the screen
+            // if(this.x < 0) {
+            //     if(this.y > paddle1.y - this.r)
+            // }
         },
         draw: function(canvasContext) {
             canvasContext.fillStyle = 'white';
@@ -34,8 +39,19 @@ function Ball(x, y, r, dx, dy) {
     };
 }
 
+function Player(score) {
+    return {
+        score: score,
+        setScore: function(newScore) {
+            score = newScore;
+        }
+    };
+}
+
 (function() {
 
+    var player1;
+    var player2;
     var paddle1;
     var paddle2;
     var ball;
@@ -43,6 +59,9 @@ function Ball(x, y, r, dx, dy) {
     window.onload = function() {
         canvas = document.getElementById("gameCanvas");
         canvasContext = canvas.getContext('2d');
+
+        player1 = new Player(0);
+        player2 = new Player(0);
 
         paddle1 = new Paddle(10, 100, 0, 0);
         paddle2 = new Paddle(10, 100, 0, 0); // 3rd parameter will be soon overriden by setInterval()
