@@ -17,10 +17,10 @@ function Ball(x, y, r, dx, dy) {
         r: r,
         dx: dx,
         dy: dy,
-        move: function(boundaryY) {
+        move: function(maxY) {
             this.x += this.dx;
             this.y += this.dy;
-            if(this.y + r >= boundaryY) {
+            if(this.y + r >= maxY) {
                 this.dy = -this.dy;
             } 
             else if(this.y <= 0) {
