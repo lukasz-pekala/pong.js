@@ -17,20 +17,9 @@ function Ball(x, y, r, dx, dy) {
         r: r,
         dx: dx,
         dy: dy,
-        move: function(maxY) {
+        move: function() {
             this.x += this.dx;
             this.y += this.dy;
-            if(this.y + r >= maxY) {
-                this.dy = -this.dy;
-            } 
-            else if(this.y <= 0) {
-                this.dy = -this.dy;
-            }
-
-            //left side of the screen
-            // if(this.x < 0) {
-            //     if(this.y > paddle1.y - this.r)
-            // }
         },
         draw: function(canvasContext) {
             canvasContext.fillStyle = 'white';
@@ -48,6 +37,30 @@ function Player(score) {
     };
 }
 
+function CollisionManager(screenWidth, screenHeight, paddle1, paddle2, ball) {
+    var paddle1 = paddle1;
+    var paddle2 = paddle2;
+    var ball = ball;
+    var screenWidth = screenWidth;
+    var screenHeight = screenHeight;
+
+    var changeBallMovementIfItReachesTopOrBottom = function() {
+            if(ball.y + ball.r >= screenHeight) {
+                ball.dy = -ball.dy;
+            } 
+            else if(ball.y <= 0) {
+                ball.dy = -ball.dy;
+            }
+    }
+
+    return {
+        detectAndManageCollisions: function() {
+            changeBallMovementIfItReachesTopOrBottom();
+
+        }
+    };
+}
+
 (function() {
 
     var player1;
@@ -55,6 +68,7 @@ function Player(score) {
     var paddle1;
     var paddle2;
     var ball;
+    var collisionManager;
 
     window.onload = function() {
         canvas = document.getElementById("gameCanvas");
@@ -66,6 +80,7 @@ function Player(score) {
         paddle1 = new Paddle(10, 100, 0, 0);
         paddle2 = new Paddle(10, 100, 0, 0); // 3rd parameter will be soon overriden by setInterval()
         ball = new Ball(canvas.width / 2, canvas.height / 2, 5, 2, 2);
+        collisionManager = new CollisionManager(canvas.width, canvas.height, paddle1, paddle2, ball);
 
         setInterval(update, 1000/30);
     };
@@ -75,8 +90,9 @@ function Player(score) {
         drawPaddle();
         drawPaddle2();
 
-        ball.move(canvas.height);
+        ball.move();
         ball.draw(canvasContext);
+        collisionManager.detectAndManageCollisions();
     };
 
     function drawBackground() {
