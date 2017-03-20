@@ -107,7 +107,7 @@ function CollisionManager(screenWidth, screenHeight, paddle1, paddle2, ball) {
 
     function drawPaddle2() {
         canvasContext.fillStyle = 'white';
-        canvasContext.fillRect(canvas.width - paddle2.width, paddle1.y, paddle2.width, paddle2.height);
+        canvasContext.fillRect(canvas.width - paddle2.width, paddle2.y, paddle2.width, paddle2.height);
     }
 
 })();
