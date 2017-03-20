@@ -81,7 +81,11 @@ function CollisionManager(screenWidth, screenHeight, paddle1, paddle2, ball) {
         paddle2 = new Paddle(10, 100, 0, 0); // 3rd parameter will be soon overriden by setInterval()
         ball = new Ball(canvas.width / 2, canvas.height / 2, 5, 2, 2);
         collisionManager = new CollisionManager(canvas.width, canvas.height, paddle1, paddle2, ball);
-
+    
+        canvas.addEventListener("mousemove", function(e) {
+            paddle1.y = e.clientY - paddle1.height;
+        });
+        
         setInterval(update, 1000/30);
     };
 
