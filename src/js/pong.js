@@ -53,10 +53,27 @@ function CollisionManager(screenWidth, screenHeight, paddle1, paddle2, ball) {
             }
     }
 
+    var changeBallMovementIfItCollidesWithPaddle1 = function() {
+        if(ball.y >= paddle1.y && ball.y <= paddle1.y + paddle1.height) {
+            if(ball.x <= paddle1.x + paddle1.width) {
+                ball.dx = -ball.dx;
+            }
+        }
+    }
+
+    var changeBallMovementIfItCollidesWithPaddle2 = function() {
+        if(ball.y >= paddle2.y && ball.y <= paddle2.y + paddle2.height) {
+            if(ball.x + ball.r >= paddle2.x) {
+                ball.dx = -ball.dx;
+            }
+        }
+    }
+
     return {
         detectAndManageCollisions: function() {
             changeBallMovementIfItReachesTopOrBottom();
-
+            changeBallMovementIfItCollidesWithPaddle1();
+            changeBallMovementIfItCollidesWithPaddle2();
         }
     };
 }
@@ -77,16 +94,21 @@ function CollisionManager(screenWidth, screenHeight, paddle1, paddle2, ball) {
         player1 = new Player(0);
         player2 = new Player(0);
 
+        var paddleWidth = 10;
         paddle1 = new Paddle(10, 100, 0, 0);
-        paddle2 = new Paddle(10, 100, 0, 0); // 3rd parameter will be soon overriden by setInterval()
-        ball = new Ball(canvas.width / 2, canvas.height / 2, 5, 2, 2);
+        paddle2 = new Paddle(paddleWidth, 100, canvas.width - paddleWidth, 0);
+        ball = new Ball(canvas.width / 2, canvas.height / 2, 5, -1, -1);
         collisionManager = new CollisionManager(canvas.width, canvas.height, paddle1, paddle2, ball);
     
         canvas.addEventListener("mousemove", function(e) {
             paddle1.y = e.clientY - paddle1.height;
         });
+
+        canvas.addEventListener("mousemove", function(e) {
+            paddle2.y = e.clientY - paddle2.height;
+        });
         
-        setInterval(update, 1000/30);
+        setInterval(update, 1000/60);
     };
 
     function update() {
@@ -111,7 +133,7 @@ function CollisionManager(screenWidth, screenHeight, paddle1, paddle2, ball) {
 
     function drawPaddle2() {
         canvasContext.fillStyle = 'white';
-        canvasContext.fillRect(canvas.width - paddle2.width, paddle2.y, paddle2.width, paddle2.height);
+        canvasContext.fillRect(paddle2.x, paddle2.y, paddle2.width, paddle2.height);
     }
 
 })();
